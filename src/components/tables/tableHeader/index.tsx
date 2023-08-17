@@ -9,7 +9,7 @@ export const TableHeader = ({ children, ...rest }: TableHeaderProps) => {
   return (
     <Th
       color="blue.900"
-      fontSize="14px"
+      fontSize="16px"
       borderColor="#FFF"
       textTransform="initial"
       fontWeight="normal"

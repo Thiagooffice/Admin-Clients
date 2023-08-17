@@ -1,10 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-import { Box, HStack, Link, Text } from "@chakra-ui/react";
+import { Box, HStack, Link, Text, Button } from "@chakra-ui/react";
 import { TableClients } from "../../components/tables/tableClients"
 import { api } from "../../services/api";
 import { useEffect, useState } from "react"
 import {FormClient} from "../../components/forms/formClient"
 import { useRouter } from "next/router";
+import {ImExit} from "react-icons/im"
 
 
 export default function Menu() {
@@ -14,7 +15,7 @@ export default function Menu() {
 ()
     useEffect(() => {
         async function getClients() {
-            const { data } = await api.get("/clients")
+            const { data } = await api.get("Clientes")
             setClients(data)
         }
         getClients()
@@ -23,6 +24,14 @@ export default function Menu() {
     return (
         <Flex bg="blue.900" minH="100vh">
             <Box color="white" p="1rem" pr="0">
+                <Button onClick={() => {
+                    router.push("/")
+                }} bottom="1rem" left="2rem" position="fixed">
+                    <Flex alignItems="center" gap="1rem">
+                        <Text fontSize="1rem">Sair</Text>
+                        <Box><ImExit size={23}/></Box>
+                    </Flex>
+                </Button>
                 <Link href={"/menu"}>
                     <HStack mb="2rem" mr="1rem">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" height="2.3rem" width="2.3rem">
@@ -60,7 +69,9 @@ export default function Menu() {
                         borderLeftRadius="0.6rem"
                         bg={optionsMenu === 2 ? "white" : "blue.900"}
                         color={optionsMenu === 2 ? "blue.900" : "white"}
-                        onClick={() => setOptionsMenu(2)}
+                        onClick={() => {
+                            setOptionsMenu(2)
+                        }}
                     >
                         <HStack>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="2.3rem" height="2.3rem">

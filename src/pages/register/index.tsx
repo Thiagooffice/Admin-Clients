@@ -60,8 +60,8 @@ export default function Register() {
                         type="text"
                         placeholder="Digite seu nome"
                         errorMessagePosition='relative'
-                        error={errors.nome}
-                        {...register("nome")}
+                        error={errors.name}
+                        {...register("name")}
                     />
                     <Input
                         label="Senha"

@@ -15,7 +15,7 @@ export type SignInData = {
   }
   
   export type RegisterData = {
-    nome: string
+    name: string
     email: string
     senha: string
     confirmeSenha: string

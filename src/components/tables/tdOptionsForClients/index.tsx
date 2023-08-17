@@ -15,32 +15,36 @@ import { useRouter } from "next/router";
 import { Client } from "../../../types";
 import { Modal } from "../../modal";
 import { api } from "../../../services/api";
+import { Input } from "@/components/inputs/input";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { editClientSchema } from "@/utils/yup/shapes";
+import { useForm } from "react-hook-form";
+import { ModalEditClient } from "@/components/modal/modalEditClient";
 
 type TdOptionsProps = {
   client: Client;
-  changeMenuOptions?: any,
   setOptionsMenu: any
 };
 
-export const TdOptionsForClients = ({ client, changeMenuOptions, setOptionsMenu }: TdOptionsProps) => {
+export const TdOptionsForClients = ({ client, setOptionsMenu }: TdOptionsProps) => {
   const toast = useToast();
+  const router = useRouter()
   const { push } = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-
+  const { isOpen: isOpenModalDelete, onOpen: onOpenModalDelete, onClose: onCloseModalDelete } = useDisclosure();
+  const { isOpen: isOpenModalEdit, onOpen: onOpenModalEdit, onClose: onCloseModalEdit } = useDisclosure();
+  
   async function handleDeleteClient(item: any) {
     try {
-      await api.delete(`clients/${item}`)
-      setTimeout(() => {
-        onClose()
-      }, 3000);
-      window.location.reload();
+      await api.delete(`Clientes/${item}`)
+      onCloseModalDelete()
       toast({
         description: "Successfully Deleted",
         status: "success",
         variant: "solid",
         isClosable: true,
       });
+      window.location.reload();
+      router.push("menu/")
     } catch (error: any) {
       toast({
         description: "Error deleting",
@@ -61,17 +65,14 @@ export const TdOptionsForClients = ({ client, changeMenuOptions, setOptionsMenu 
           <MenuList minW="auto" borderColor="#FFF" p="0">
             <MenuItem
               color="gray.500"
-              onClick={() => {
-                setOptionsMenu(2)
-                push(`menu?uuid=${client?.id}`)
-              } }
+              onClick={onOpenModalEdit}
             >
               <Flex alignItems="center">
                 <MdOutlineEditNote />
-                <Text ml="2">Editar</Text>
+                <Text ml="2">Edit</Text>
               </Flex>
             </MenuItem>
-            <MenuItem onClick={onOpen} color="gray.500">
+            <MenuItem onClick={onOpenModalDelete} color="gray.500">
               <Flex alignItems="center">
                 <MdDelete />
                 <Text ml="2">Delete</Text>
@@ -81,9 +82,9 @@ export const TdOptionsForClients = ({ client, changeMenuOptions, setOptionsMenu 
         </Menu>
       </Flex>
       <Modal
-        title={`Deseja excluir o cliente ${client?.name}?`}
-        isOpen={isOpen}
-        onClose={onClose}
+        title={`Do you want to delete the client ${client?.name}?`}
+        isOpen={isOpenModalDelete}
+        onClose={onCloseModalDelete}
       >
         <Flex gap={4} mx="2rem" mb="1.5rem">
           <Button
@@ -92,18 +93,19 @@ export const TdOptionsForClients = ({ client, changeMenuOptions, setOptionsMenu 
             type="button"
             onClick={() => handleDeleteClient(client?.id)}
           >
-            Sim
+            Yes
           </Button>
           <Button
             w={{ base: "full", md: "12rem" }}
             variant="alternative"
             type="button"
-            onClick={onClose}
+            onClick={onCloseModalDelete}
           >
-            Não
+            No
           </Button>
         </Flex>
       </Modal>
+      <ModalEditClient client={client} isOpen={isOpenModalEdit} onClose={onCloseModalEdit}/>
     </Td>
   );
 };

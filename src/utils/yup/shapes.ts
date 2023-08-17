@@ -8,6 +8,9 @@ export const signInSchema = yup.object().shape({
 export const createClientSchema = yup.object().shape({
     name: yup.string().required("Name is required"),})
 
+export const editClientSchema = yup.object().shape({
+      name: yup.string().required("Name is required"),})
+
 export const registerSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup.string().required("E-mail is required").email("Invalid e-mail"),

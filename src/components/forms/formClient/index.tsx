@@ -14,7 +14,7 @@ interface FormClientProps {
 
 export function FormClient({ setOptionsMenu }: FormClientProps) {
     const router = useRouter()
-    const [isUpdate, setIsUpdate] = useState<string>()
+    const [clientId, setClientId] = useState<string>()
     const { query, push } = useRouter();
     const toast = useToast();
     const {
@@ -33,7 +33,7 @@ export function FormClient({ setOptionsMenu }: FormClientProps) {
         function getClient() {
             const client = query.uuid;
             if (client) {
-                setIsUpdate(String(client))
+                setClientId(String(client))
             }
         }
         getClient()
@@ -43,25 +43,20 @@ export function FormClient({ setOptionsMenu }: FormClientProps) {
         data
     ) => {
         try {
-            isUpdate ? await api.put(`clients/${isUpdate}`, {
-                name: data.name
-            }) : await api.post("clients", {
+            await api.post("Clientes", {
                 name: data.name
             })
             toast({
-                description: isUpdate ? "Customer successfully edited" : "Successfully registered customer",
+                description:"Successfully registered customer",
                 status: "success",
                 variant: "solid",
                 isClosable: true,
             });
-            setTimeout(() => {
-                setOptionsMenu(1)
-                window.location.reload();
-                router.push("/menu")
-            }, 3000);
+            setOptionsMenu(1)
+            window.location.reload();
         } catch (error) {
             toast({
-                description: isUpdate ? "Error editing client" : "Error registering client.",
+                description:"Error registering client.",
                 status: "error",
                 variant: "solid",
                 isClosable: true,
@@ -72,7 +67,7 @@ export function FormClient({ setOptionsMenu }: FormClientProps) {
 
     return (
         <Box>
-            <Text fontSize="1.4rem" fontWeight="500">{isUpdate ? "Edit Client" : "Register Client"}</Text>
+            <Text fontSize="1.4rem" fontWeight="500">Register Client</Text>
             <Box as="form" onSubmit={handleSubmit(handleRegisterClient)} p="3rem" mt="1rem" h="30rem" borderRadius="0.5rem" border="1px solid #e1e0e0">
                 <Input
                     label="Client"
@@ -81,20 +76,9 @@ export function FormClient({ setOptionsMenu }: FormClientProps) {
                     errorMessagePosition='relative'
                     placeholder="Client name"
                 />
-                <Flex gap={isUpdate && "2rem"} pl="60%">
-                    {
-                        isUpdate && <Button w="15rem" bg="#5379ec" color="white" _hover={{ background: "#4162c4" }} mt="1rem" onClick={() => {
-                            setOptionsMenu(1)
-                            router.push("/menu")
-                        }
-                        }>
-                        Cancel
-                    </Button>
-                    }
+                <Flex gap={"2rem"} pl="60%">
                         <Button w="15rem" bg="#5379ec" color="white" _hover={{ background: "#4162c4" }} mt="1rem" type="submit">
-                            {
-                                isUpdate ? "Edit" : "Register"
-                            }
+                               Register
                         </Button>
                 </Flex>
             </Box>

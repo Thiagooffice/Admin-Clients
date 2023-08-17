@@ -24,9 +24,9 @@ export function TableClients({ clients, setOptionsMenu }: TableClients) {
                 />
                 <Thead>
                     <Tr>
-                        <TableHeader>Cliente</TableHeader>
-                        <TableHeader>Criação</TableHeader>
-                        <TableHeader>Atualização</TableHeader>
+                        <TableHeader>Client</TableHeader>
+                        <TableHeader>Creation</TableHeader>
+                        <TableHeader>Update</TableHeader>
                     </Tr>
                 </Thead>
                 <Tbody overflow="scroll">
